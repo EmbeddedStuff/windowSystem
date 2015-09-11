@@ -2,10 +2,10 @@ INCLUDE_DIRS:=include
 COMPILE_DIRS:=source
 LIB_DIRS:= 
 
-EXEC_TARGET:=myprog
+LIBTARGET:= libmylib.a
 
 ##FILES THAT NEED TO BE COMPILED
-CFILES:= main.c mylib.c
+CFILES:= mylib.c
 ##LIBRARIES THAT NEED TO BE CREATED
 LIBFILES:=
 ##EXISTING LIBNAMES THAT NEED TO BE LINKED lib<name>
@@ -14,7 +14,7 @@ LIBS_TO_LINK:=
 LIBNAMES:= $(patsubst lib%.a,%,$(LIBFILES)) $(patsubst lib%,%,$(LIBS_TO_LINK)) 
 #LIBFLAGS:= -static $(patsubst %,-L%,$(LIB_DIRS)) $(patsubst %,-l%,$(LIBNAMES))
 
-DIRS:= objects
+DIRS:= objects bin
 VPATH:= $(INCLUDE_DIRS) $(COMPILE_DIRS) $(LIB_DIRS) $(DIRS)
 
 INCLUDEFLAGS:=$(patsubst %,-I%,$(INCLUDE_DIRS))
@@ -26,10 +26,10 @@ CC:=gcc
 
 .PHONY: clean run
 
-all: $(EXEC_TARGET) 
+all: $(LIBTARGET) 
 
-$(EXEC_TARGET): $(DIRS) $(COBJECTS) $(LIBFILES)
-	gcc $(CFLAGS) $(patsubst %,objects/%,$(COBJECTS)) $(LIBFLAGS) -o $@
+$(LIBTARGET): $(DIRS) $(COBJECTS) $(LIBFILES)
+	ar rcs ./bin/$@ objects/*.o
 $(COBJECTS): %.o: %.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o objects/$@
 
@@ -38,7 +38,6 @@ $(DIRS): %:
 
 clean:
 	rm -fr $(DIRS)
-	rm -f $(EXEC_TARGET)
 	make -s --directory=tests clean
 run: $(EXEC_TARGET)
 	./$(EXEC_TARGET)
