@@ -7,7 +7,7 @@ TEST_FILES:= $(notdir $(wildcard ./source/*.c ))
 EXEC_TARGET:=$(shell basename $(CURDIR))
 
 ##FILES THAT NEED TO BE COMPILED
-CFILES:= $(TEST_FILES) mylib.c
+CFILES:= $(TEST_FILES) window_manager.c
 ##EXISTING LIBNAMES THAT NEED TO BE LINKED lib<name>
 LIBS_TO_LINK:=
 ##PACKAGE CONFIG LIBS

@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <CUnit/Basic.h>
+#include "window_manager.h"
 /*
  * CUnit Test Suite
  */
@@ -33,7 +34,7 @@ int main() {
 		return CU_get_error();
 
 	/* Add a suite to the registry */
-	pSuite = CU_add_suite("template", init_suite, clean_suite);
+	pSuite = CU_add_suite("window_manager", init_suite, clean_suite);
 	if (NULL == pSuite) {
 		CU_cleanup_registry();
 		return CU_get_error();
