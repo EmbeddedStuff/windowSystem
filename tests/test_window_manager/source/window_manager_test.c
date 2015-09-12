@@ -18,17 +18,42 @@ int clean_suite(){
 	return 0;
 }
 
+#define F_NONE 0
+#define F_EVENT_HANDLER 1
+#define F_REDRAW 2
+
+int calledFirst = 0;
+
+void redraw(void){
+	if(calledFirst == F_NONE)
+		calledFirst = F_REDRAW;
+}
+
+void event_handler(int event){
+	if(calledFirst == F_NONE)
+		calledFirst = F_EVENT_HANDLER;
+}
+
 void test_func1() {
-	CU_ASSERT( 0 == 0);
+	window_t myWindow = {redraw, event_handler};
+
+	window_delete();
+	CU_ASSERT( window_getCurrentWindow() == NULL);
+
+	window_init(&myWindow);
+	CU_ASSERT( window_getCurrentWindow() == &myWindow);
+
+	CU_ASSERT(calledFirst == F_EVENT_HANDLER);
 }
 
 int main() {
 	CU_TestInfo test_array[] = {
-		{"testname1", test_func1},
+		{"that windows can be added", test_func1},
 		CU_TEST_INFO_NULL};
 
 	CU_SuiteInfo suite_array[] = {
-		{"window_manager_test", init_suite, clean_suite, test_array},
+		{"window_manager_test", init_suite, clean_suite, 
+			test_array},
 		CU_SUITE_INFO_NULL};
 
 	/* Initialize the CUnit test registry */
