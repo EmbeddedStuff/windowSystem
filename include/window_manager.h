@@ -13,6 +13,7 @@ extern "C" {
 #endif
 
 	#define WINDOW_EVENT_ON_CREATE 0
+	#define WINDOW_EVENT_ON_EXIT 1
 
 	/**
 	 * 

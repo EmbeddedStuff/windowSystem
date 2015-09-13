@@ -25,8 +25,11 @@ void window_postEvent(int event){
 	if(current_window != NULL){
 		window_t* initialWindow = current_window; 
 		current_window->event_handler(event);
-		if(initialWindow != current_window)
+		if(initialWindow != current_window){
+			initialWindow->event_handler(WINDOW_EVENT_ON_EXIT);
+			current_window->event_handler(WINDOW_EVENT_ON_CREATE);
 			current_window->redraw();
+		}
 	}
 	//release lock
 }

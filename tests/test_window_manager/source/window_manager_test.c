@@ -22,16 +22,20 @@ int clean_suite(){
 #define F_EVENT_HANDLER 1
 #define F_REDRAW 2
 
-int calledFirst = 0;
+int callLog[3] = {F_NONE, F_NONE, F_NONE};
+int callIndex = 0;
 
 void redraw(void){
-	if(calledFirst == F_NONE)
-		calledFirst = F_REDRAW;
+	callLog[callIndex] = F_REDRAW;
+	callIndex++;
 }
 
+int received_event = -1;
 void event_handler(int event){
-	if(calledFirst == F_NONE)
-		calledFirst = F_EVENT_HANDLER;
+	callLog[callIndex] = F_EVENT_HANDLER;
+	callIndex++;
+
+	received_event = event;
 }
 
 void test_func1() {
@@ -43,7 +47,8 @@ void test_func1() {
 	window_init(&myWindow);
 	CU_ASSERT( window_getCurrentWindow() == &myWindow);
 
-	CU_ASSERT(calledFirst == F_EVENT_HANDLER);
+	CU_ASSERT(callLog[0] == F_EVENT_HANDLER);
+	CU_ASSERT(received_event == WINDOW_EVENT_ON_CREATE);
 }
 
 int main() {
@@ -52,7 +57,7 @@ int main() {
 		CU_TEST_INFO_NULL};
 
 	CU_SuiteInfo suite_array[] = {
-		{"window_manager_test", init_suite, clean_suite, 
+		{"window_manager_test", init_suite, clean_suite,
 			test_array},
 		CU_SUITE_INFO_NULL};
 
