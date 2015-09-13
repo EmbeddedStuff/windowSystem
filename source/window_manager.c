@@ -20,10 +20,14 @@ window_t* window_getCurrentWindow(void){
 	return current_window;
 }
 
+void window_changeWindow(window_t* nextWindow){
+	current_window = nextWindow;
+}
+
 void window_postEvent(int event){
 	//get lock
 	if(current_window != NULL){
-		window_t* initialWindow = current_window; 
+		window_t* initialWindow = current_window;
 		current_window->event_handler(event);
 		if(initialWindow != current_window){
 			initialWindow->event_handler(WINDOW_EVENT_ON_EXIT);
@@ -33,3 +37,4 @@ void window_postEvent(int event){
 	}
 	//release lock
 }
+

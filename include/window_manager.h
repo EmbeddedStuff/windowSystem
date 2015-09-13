@@ -44,7 +44,7 @@ extern "C" {
 	 * 
      * @param nextWindow
      */
-	void window_chageWindow(window_t* nextWindow);
+	void window_changeWindow(window_t* nextWindow);
 
 	/**
 	 *
